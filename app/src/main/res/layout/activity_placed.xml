@@ -10,29 +10,42 @@
         android:layout_width="198dp"
         android:layout_height="251dp"
         android:contentDescription="TODO"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/checked"
+        app:layout_constraintBottom_toTopOf="@+id/total_price"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/checked" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="174dp"
-        android:layout_height="154dp"
-        android:layout_marginTop="84dp"
+        android:layout_width="182dp"
+        android:layout_height="125dp"
         android:fontFamily="@font/allura"
+        android:gravity="center_horizontal"
         android:includeFontPadding="false"
-        android:text="Thank you for your order!"
+        android:text="Thank you for shippoing at Sportify!"
+        android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.0"
-        android:textAlignment="center"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toBottomOf="@+id/total_price" />
+
+    <TextView
+        android:id="@+id/total_price"
+        android:layout_width="132dp"
+        android:layout_height="53dp"
+        android:background="@color/sportify_color"
+        android:fontFamily="@font/artifika"
+        android:gravity="center_horizontal"
+        android:text="Total:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.sportify.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+
 
 public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.CartItemHolder> {
     /**
@@ -45,10 +48,21 @@ public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.C
         holder.p_name.setText(model.getTitle());
         holder.p_price.setText(model.getPrice());
         holder.p_quantity.setText(model.getQuantity());
+        holder.p_total.setText("Total :"+model.getTotal());
         Glide.with(holder.p_image.getContext()).load(model.getImage_url()).into(holder.p_image);
 
-
-
+//        holder.b_increase_quantity.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                holder.dbr.child("customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("z_bought products").child(model.getTitle())
+//            }
+//        });
+//        holder.b_reduce_quantity.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     @NonNull
@@ -63,10 +77,13 @@ public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.C
 
 
     class CartItemHolder extends RecyclerView.ViewHolder {
-        TextView p_name,p_price,p_quantity;
+        TextView p_name,p_price,p_quantity,p_total;
         ImageView p_image;
-
-
+        private  DecimalFormat df2 = new DecimalFormat("#.##");
+        FloatingActionButton b_increase_quantity;
+        FloatingActionButton b_reduce_quantity;
+        Button b_remove;
+        DatabaseReference dbr= FirebaseDatabase.getInstance().getReference();
         public CartItemHolder(@NonNull View itemView) {
             super(itemView);
             this.p_image=itemView.findViewById(R.id.cart_item_image);
@@ -74,13 +91,13 @@ public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.C
 //            this.p_details=itemView.findViewById(R.id.product_details);
             this.p_price=itemView.findViewById(R.id.cart_item_price);
             this.p_quantity=itemView.findViewById(R.id.cart_item_quantity);
-
+            this.p_total=itemView.findViewById(R.id.cart_item_total_price);
               /*
          BUTTONS
            */
-            FloatingActionButton b_increase_quantity=itemView.findViewById(R.id.cart_item_increase);
-            FloatingActionButton b_reduce_quantity=itemView.findViewById(R.id.cart_item_reduce);
-            Button b_remove=itemView.findViewById(R.id.cart_item_remove);
+            this.b_increase_quantity=itemView.findViewById(R.id.cart_item_increase);
+            this.b_reduce_quantity=itemView.findViewById(R.id.cart_item_reduce);
+            this.b_remove=itemView.findViewById(R.id.cart_item_remove);
 
             /*
             here we implement the on clicklisterners
@@ -121,7 +138,21 @@ public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.C
                                     .child(p_name.getText().toString().trim())
                                     .child("quantity").setValue(quantity.toString());
 
-
+                            /*
+                            TODO: update total price
+                             */
+                            String current_total=(String)snapshot.child("total").getValue();
+                            Double currentTotal= Double.parseDouble(current_total);
+                            Log.d("TAGG",currentTotal.toString());
+                            String current_price=(String)snapshot.child("price").getValue();
+                            Log.d("TAGG",current_price.toString());
+                            Double currentPrice=Double.parseDouble(current_price.split(":")[1].trim());
+                            currentTotal=currentTotal+currentPrice;
+                            dbr.child("customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child("z_bought products")
+                                    .child(p_name.getText().toString().trim())
+                                    .child("total").setValue(df2.format(currentTotal).toString());
+                            Log.d("TAGG",current_total.toString());
 //                            Integer current_price= new Integer(((String)snapshot.child("price").getValue()).split(":")[1].trim().split("₪")[0]);
 //                            int total_price=quantity*current_price;
 //                             /*
@@ -146,10 +177,10 @@ public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.C
                     FirebaseDatabase.getInstance().getReference().child("customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("z_bought products")
                             .child(p_name.getText().toString().trim())
-                            .child("quantity").addListenerForSingleValueEvent(new ValueEventListener() {
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String current_quantity=(String)snapshot.getValue();
+                            String current_quantity=(String)snapshot.child("quantity").getValue();
                             Integer quantity= new Integer(current_quantity);
 //                            Toast.makeText(v.getContext(),current_quantity,Toast.LENGTH_SHORT).show();
                             quantity--;
@@ -160,6 +191,26 @@ public class cartAdapter extends FirebaseRecyclerAdapter<CartItem, cartAdapter.C
                                 /*
                             TODO : update the total price --
                              */
+                            /*
+                            TODO: update total price
+                             */
+                            String current_total=(String)snapshot.child("total").getValue();
+                            Log.d("TAGG",snapshot.child("total").getValue().toString());
+                            Double currentTotal= Double.parseDouble(current_total);
+                            String current_price=(String)snapshot.child("price").getValue();
+                            Log.d("TAGG",current_price.toString());
+                            Double currentPrice=Double.parseDouble(current_price.split(":")[1].trim());
+                            currentTotal=currentTotal-currentPrice;
+                            dbr.child("customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child("z_bought products")
+                                    .child(p_name.getText().toString().trim())
+                                    .child("total").setValue(df2.format(currentTotal).toString());
+                            Log.d("TAGG",current_total.toString());
+
+
+
+
+
 //                            Integer current_price= new Integer(((String)snapshot.child("price").getValue()).split(":")[1].trim().split("₪")[0]);
 //                            int total_price=quantity*current_price;
 //

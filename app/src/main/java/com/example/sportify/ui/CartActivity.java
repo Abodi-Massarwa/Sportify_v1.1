@@ -60,7 +60,7 @@ public class CartActivity extends AppCompatActivity {
         bt= findViewById(R.id.placeorder);
     bt.setOnClickListener(v -> {
         Toast.makeText(getApplicationContext(),"Processing your order",Toast.LENGTH_SHORT).show();
-        FirebaseDatabase.getInstance().getReference().child("customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("status").setValue("True");
+//        FirebaseDatabase.getInstance().getReference().child("customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("status").setValue("True");
         Intent placed= new Intent(getApplicationContext(), PlacedActivity.class);
     startActivity(placed);
     });

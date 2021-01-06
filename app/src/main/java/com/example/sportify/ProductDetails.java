@@ -1,5 +1,6 @@
 package com.example.sportify;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,8 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import static java.lang.Double.parseDouble;
 
 public class ProductDetails{
 
@@ -21,6 +24,16 @@ public class ProductDetails{
     private String price;
     private String utc;
     private String quantity;
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    private String total;
 
 
     public ProductDetails(String title, String details, String price, String quantity) {
@@ -48,7 +61,22 @@ public class ProductDetails{
     public ProductDetails(){
 
     }
-    public ProductDetails(String title, String details, String condition, String price, String utc, String quantity,String img ) {
+//    public ProductDetails(String title, String details, String condition, String price, String utc, String quantity,String img) {
+//        this.title = title;
+//        this.details = details;
+//        this.condition = condition;
+//        this.price = price;
+//        this.utc = utc;
+//        this.quantity=quantity;
+//        this.image_url=img;
+//
+//        Double x= (Integer.parseInt(quantity.trim())*Double.parseDouble(price.split(":")[1].trim()));
+//        this.total=x.toString();
+//        Log.d("emt7an",quantity);
+//        Log.d("emt7an",price);
+//        Log.d("emt7an", total);
+//    }
+    public ProductDetails(String title, String details, String condition, String price, String utc, String quantity,String img,String total) {
         this.title = title;
         this.details = details;
         this.condition = condition;
@@ -56,6 +84,13 @@ public class ProductDetails{
         this.utc = utc;
         this.quantity=quantity;
         this.image_url=img;
+
+        Double x= (Integer.parseInt(quantity.trim())*Double.parseDouble(price.split(":")[1].trim()));
+        total=x.toString();
+        this.total=total;
+        Log.d("emt7an",quantity);
+        Log.d("emt7an",price);
+        Log.d("emt7an", total);
     }
 //    public ProductDetails(String title, String details, String condition, String price, String utc, String quantity, ImageView img ) {
 //        this.title = title;

@@ -41,6 +41,7 @@ public class productAdapter extends FirebaseRecyclerAdapter<ProductDetails, prod
         Button buy_button;
         ImageView img;
         String link="a7a";
+        TextView v_order_total;
         public product_view_holder(@NonNull View itemView)
         {
             super(itemView);
@@ -52,7 +53,7 @@ public class productAdapter extends FirebaseRecyclerAdapter<ProductDetails, prod
             img = itemView.findViewById(R.id.image_url);
             buy_button = itemView.findViewById(R.id.buy_button);
             quantity_text=itemView.findViewById(R.id.quantity_text);
-
+            v_order_total=itemView.findViewById(R.id.total_price);
             // buy button
             buy_button.setOnClickListener(v -> {
                 s_ref=fbs.getReference(utc_text.getText().toString().split(":")[1].trim()+".png");
@@ -63,7 +64,7 @@ public class productAdapter extends FirebaseRecyclerAdapter<ProductDetails, prod
                     public void onSuccess(Uri uri) {
                         FirebaseDatabase.getInstance().getReference().child("link").setValue(uri.toString().trim());
                         link=uri.toString().trim();
-                        ProductDetails productDetails = new ProductDetails(title_text.getText().toString().trim(), details_text.getText().toString().trim(), condition_text.getText().toString().trim(), price_text.getText().toString().trim(), utc_text.getText().toString().trim(),quantity_text.getText().toString().trim(),link);
+                        ProductDetails productDetails = new ProductDetails(title_text.getText().toString().trim(), details_text.getText().toString().trim(), condition_text.getText().toString().trim(), price_text.getText().toString().trim(), utc_text.getText().toString().trim(),quantity_text.getText().toString().trim(),link,"1");
                         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("customers/"+ Objects.requireNonNull(ref.getCurrentUser()).getUid()+"/z_bought products/"+productDetails.getTitle());
                         ref1.setValue(productDetails);
 
